@@ -19,7 +19,10 @@ def caching_fibonacci():
     return fibonacci
 
 
-        
+if __name__ == "__main__":
+    fib = caching_fibonacci()
+    print(fib(8))  # 21
+    print(fib(10))  # 55   
 
         #використана для обчислення чисел Фібоначчі з використанням кешування.
 
