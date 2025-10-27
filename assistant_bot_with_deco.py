@@ -100,33 +100,27 @@ def main():
         elif command in ["hello", "hi", "hey"]: # привітання
             print("How can I help you?")
 
-        elif command == "add": # додати контакт
-            # просимо одразу ввести дані контакту
+        elif command == "add":
             print("Please, give us your user contact details: name, phone")
-            details = input("Enter name and phone separated by comma, space: ").replace(",", "").strip()
+            details = input("Enter name and phone separated by comma, space: ").replace(",", " ").strip()
             args = details.split()
-            print(add_contact(args, contacts))
-
+            print(add_contact(args, contacts))  # 🟢 декоратор ловить можливі помилки
             
 
-        elif command == "change": # змінити контакт
-
+        elif command == "change":
             print("Please, enter contact to change: name, new_phone")
-            details = input("Enter name and new phone separated by comma, space: ").replace(",", "").strip()
+            details = input("Enter name and new phone separated by comma, space: ").replace(",", " ").strip()
             args = details.split()
-            print(change_contact(args, contacts)) 
+            print(change_contact(args, contacts))  # 🟢 теж під захистом декоратора
 
             
         
-        elif command == "phone": # показати номер телефону
-            if len(args) == 0:
-                print("Please, enter the contact name to look up.")
-                details = input("Enter contact name: ").strip()
-                args = [details]
+        elif command == "phone":
             print(show_phone(args, contacts))
+
            
         elif command == "all":
-            print(show_all(contacts))
+            print(show_all([], contacts))
 
         elif command == "":
             # порожній ввід – просто питаємо ще раз, без "Invalid command."
