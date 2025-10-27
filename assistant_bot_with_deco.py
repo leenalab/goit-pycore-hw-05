@@ -82,7 +82,7 @@ def show_all(contacts: dict) -> str: # показуємо всі контакт�
     lines = ["Contact list:"]
     for rec in sorted(contacts.values(), key=lambda r: r["name"].lower()):
         lines.append(f"• {rec['name']}: {rec['phone']}")
-    return "\n".join(lines)
+    return "\n".join(lines) # все залишаємо без змін
 
 
 def main():
