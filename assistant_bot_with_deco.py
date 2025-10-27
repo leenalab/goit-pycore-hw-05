@@ -76,7 +76,7 @@ def show_phone(args, contacts):
     rec = contacts[key]          # якщо контакту нема -> KeyError (декоратор)
     return f"{rec['name']}'s phone number is {rec['phone']}."
     
-def show_all(contacts: dict) -> str: # показуємо всі контакти
+def show_all(args, contacts): # показуємо всі контакти
     if not contacts:
         return "Your contact list is empty."
     lines = ["Contact list:"]
@@ -116,6 +116,9 @@ def main():
             
         
         elif command == "phone":
+            if not args:  # якщо користувач не передав ім’я одразу
+                name = input("Enter contact name: ").strip()
+                args = [name]
             print(show_phone(args, contacts))
 
            
