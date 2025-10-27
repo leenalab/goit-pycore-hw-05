@@ -41,36 +41,40 @@ def parse_input(user_input: str):
 
 @input_error # додаємо декоратор
 
-def add_contact(args: list[str], contacts: dict) -> str: # додаємо контакт
-    # очікуємо рівно 2 аргументи: ім'я та телефон
-    if len(args) != 2:
-        return "Invalid contact details format. Use: add <name> <phone>"
-    name, phone = args
-    key = name.lower()
-    contacts[key] = {"name": name, "phone": phone}
-    return f"Contact {name} added."
+def add_contact(args, contacts): # додаємо контакт
 
-def change_contact(args: list[str], contacts: dict) -> str: # змінюємо контакт
+    """if len(args) != 2:
+        return "Invalid contact details format. Use: add <name> <phone>""" 
+    # Прибрали, тепер це замінює декоратор @input_error і ловить помилку ValueError
+    name, phone = args
+    key = name.lower()  # приводимо ім’я до нижнього регістру
+    contacts[key] = {"name": name, "phone": phone}  # додаємо структурований запис для гнучкості
+    return f"Contact {name} added."
+    
+@input_error # додаємо декоратор
+
+def change_contact(args, contacts): # змінюємо контакт
     # очікуємо рівно 2 аргументи: ім'я та новий телефон
-    if len(args) != 2:
-        return "Invalid format. Use: change <name> <new_phone>"
+    """if len(args) != 2:
+        return "Invalid format. Use: change <name> <new_phone>" """
+    # Прибрали, тепер це замінює декоратор @input_error і ловить помилку ValueError
     name, new_phone = args
     key = name.lower()
-    if key in contacts:
-        contacts[key]["phone"] = new_phone
-        return f"Phone number for {contacts[key]['name']} changed to {new_phone}."
-    else:
-        return f"Contact '{name}' not found."
-    
-def show_phone(args: list[str], contacts: dict) -> str:
-    if len(args) != 1:
-        return "Invalid format. Use: phone <name>"
+    if key not in contacts:
+        # спеціально даємо KeyError, щоб повідомлення прийшло з декоратора
+        raise KeyError(name)
+    contacts[key]["phone"] = new_phone
+    return f"Phone number for {contacts[key]['name']} changed to {new_phone}."
+
+@input_error # додаємо декоратор        
+def show_phone(args, contacts):
+    """if len(args) != 1:
+        return "Invalid format. Use: phone <name>" """
+    # якщо немає аргументу -> IndexError (декоратор)
     name = args[0]
     key = name.lower()
-    if key in contacts:
-        return f"{contacts[key]['name']}'s phone number is {contacts[key]['phone']}."
-    else:
-        return f"Contact '{name}' not found."
+    rec = contacts[key]          # якщо контакту нема -> KeyError (декоратор)
+    return f"{rec['name']}'s phone number is {rec['phone']}."
     
 def show_all(contacts: dict) -> str: # показуємо всі контакти
     if not contacts:
