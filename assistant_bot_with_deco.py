@@ -1,4 +1,4 @@
-# створюємо асистент-бота, який приймає команди від користувача
+"""# створюємо асистент-бота, який приймає команди від користувача
 # і виконує відповідні дії
 
 # Створити функцію main(), яка буде управляти основним ціклом бота
@@ -9,14 +9,37 @@
 # change_contact(), show_phone(), show_all(), close()
 
 # програма повинна ідентифікувати та повідомляти про неправильно введені команди.
+"""
+from functools import wraps
+# додаємо Import wraps - для використовування декораторів
 
-def parse_input(user_input: str): # робимо парсер (розбір) вводу
+def input_error(func): # нова функція декоратор
+    
+    @wraps(func) # додаємо декоратор із модуля functools, для збереження метаданних орігінальної функції (func) 
+    def inner(*args, **kwargs): # функція обгортка, ловимо помилки
+        try:
+            return func(*args, **kwargs) 
+        except KeyError:
+            return "Contact not found." # ловимо помилки
+        except ValueError:
+            return "Give me name and phone please."
+        except IndexError:
+            return "Not enough arguments."
+    return inner     # повертаємо обгортку замість ориг. функції
+
+
+
+
+def parse_input(user_input: str): 
 
     parts = user_input.strip().split()
-    if not parts:                 # якщо рядок порожній
-        return "", []             # повертаємо "порожню" команду
+    if not parts:                 
+        return "", []             
     cmd, *args = parts
     return cmd.lower(), args
+
+
+@input_error # додаємо декоратор
 
 def add_contact(args: list[str], contacts: dict) -> str: # додаємо контакт
     # очікуємо рівно 2 аргументи: ім'я та телефон
